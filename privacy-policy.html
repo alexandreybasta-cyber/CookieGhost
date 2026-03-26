@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CookieGhost — Privacy Policy</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0D1117;
+    color: #E6EDF3;
+    font-family: -apple-system, 'Inter', BlinkMacSystemFont, sans-serif;
+    line-height: 1.7;
+    padding: 0;
+  }
+  header {
+    background: #161B22;
+    border-bottom: 1px solid #30363D;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  header .ghost { font-size: 32px; }
+  header h1 { font-size: 20px; color: #58A6FF; }
+  header span { font-size: 13px; color: #8B949E; margin-left: 4px; }
+  main {
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 24px 80px;
+  }
+  .badge {
+    display: inline-block;
+    background: #238636;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 18px;
+    color: #58A6FF;
+    margin: 36px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #21262D;
+  }
+  p { color: #C9D1D9; margin-bottom: 12px; font-size: 15px; }
+  ul { margin: 8px 0 16px 20px; }
+  li { color: #C9D1D9; font-size: 15px; margin-bottom: 6px; }
+  .highlight {
+    background: #161B22;
+    border: 1px solid #30363D;
+    border-left: 3px solid #3FB950;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .highlight p { margin: 0; color: #3FB950; font-weight: 600; }
+  .highlight.orange { border-left-color: #F0883E; }
+  .highlight.orange p { color: #F0883E; }
+  .never-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .never-table th {
+    background: #21262D;
+    color: #8B949E;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .never-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #21262D;
+    color: #C9D1D9;
+  }
+  .never-table tr:last-child td { border-bottom: none; }
+  .check { color: #3FB950; font-weight: bold; }
+  .cross { color: #F85149; font-weight: bold; }
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #8B949E;
+    font-size: 13px;
+    border-top: 1px solid #21262D;
+  }
+  footer a { color: #58A6FF; text-decoration: none; }
+  .last-updated {
+    font-size: 12px;
+    color: #8B949E;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="ghost">👻</div>
+  <div>
+    <h1>CookieGhost <span>Privacy Policy</span></h1>
+  </div>
+</header>
+
+<main>
+  <p class="last-updated">Last updated: March 2026</p>
+  <div class="badge">✓ Zero Data Collection</div>
+
+  <div class="highlight">
+    <p>🔒 CookieGhost does not collect, store, transmit, or sell any personal data. Ever.</p>
+  </div>
+
+  <h2>What CookieGhost Does</h2>
+  <p>CookieGhost is a browser extension that anonymizes tracking cookies in real-time. When a website sets a tracking cookie (e.g. Google Analytics <code>_ga</code>, Facebook Pixel <code>_fbp</code>), CookieGhost replaces the cookie's value with a realistic-looking random value — so the website functions normally, but the tracker cannot build a profile of you.</p>
+  <p>CookieGhost <strong>never blocks or deletes cookies</strong>. Auth cookies, session cookies, and login tokens are always preserved exactly as-is.</p>
+
+  <h2>Data We Collect From You</h2>
+  <div class="highlight">
+    <p>We collect absolutely nothing. No data leaves your device.</p>
+  </div>
+
+  <table class="never-table">
+    <thead>
+      <tr>
+        <th>Data Type</th>
+        <th>Collected?</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Browsing history / URLs visited</td><td><span class="cross">✗ Never</span></td><td>Not read, not stored</td></tr>
+      <tr><td>Cookie values (original or randomized)</td><td><span class="cross">✗ Never</span></td><td>Processed in memory only</td></tr>
+      <tr><td>Personal information (name, email, etc.)</td><td><span class="cross">✗ Never</span></td><td>Not applicable</td></tr>
+      <tr><td>Page content or form data</td><td><span class="cross">✗ Never</span></td><td>Extension never reads page content</td></tr>
+      <tr><td>IP address or location</td><td><span class="cross">✗ Never</span></td><td>Not transmitted anywhere</td></tr>
+      <tr><td>Anonymous cookie counts (local only)</td><td><span class="check">✓ Yes</span></td><td>Stored on your device only — e.g. "42 cookies randomized today"</td></tr>
+      <tr><td>Your settings / preferences</td><td><span class="check">✓ Yes</span></td><td>Stored locally on your device only</td></tr>
+    </tbody>
+  </table>
+
+  <h2>What Is Stored Locally on Your Device</h2>
+  <p>CookieGhost stores the following data in your browser's local storage (<code>chrome.storage.local</code>). This data never leaves your device:</p>
+  <ul>
+    <li><strong>Settings</strong> — your chosen protection mode (Aggressive / Balanced / Gentle), whitelist, blacklist</li>
+    <li><strong>Session seeds</strong> — random values used to ensure the same cookie gets the same fake value within a session. Automatically cleared when the browser closes.</li>
+    <li><strong>Statistics</strong> — anonymous counts of how many cookies were randomized/preserved. No URLs, no cookie values, no personal data.</li>
+  </ul>
+
+  <h2>Permissions Explained</h2>
+  <p>CookieGhost requests the following browser permissions — here's exactly why each is needed:</p>
+  <ul>
+    <li><strong>cookies</strong> — To read and overwrite tracking cookie values with random data.</li>
+    <li><strong>storage</strong> — To save your settings and anonymous stats locally on your device.</li>
+    <li><strong>activeTab</strong> — To display per-site stats in the popup (e.g. "12 cookies randomized on this site").</li>
+    <li><strong>declarativeNetRequest</strong> — To block cookies from hardcore tracker domains (e.g. doubleclick.net).</li>
+    <li><strong>alarms</strong> — To periodically save stats and reset session seeds.</li>
+    <li><strong>host_permissions (&lt;all_urls&gt;)</strong> — Tracking cookies appear on every website, so the extension must be able to intercept cookie headers on all sites.</li>
+  </ul>
+
+  <h2>Third Parties</h2>
+  <div class="highlight">
+    <p>CookieGhost shares zero data with any third party. No analytics. No crash reporting. No telemetry.</p>
+  </div>
+
+  <h2>Remote Code</h2>
+  <p>CookieGhost does not load or execute any remote code. All JavaScript is bundled within the extension package itself. No external scripts are fetched at runtime.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>CookieGhost does not collect data from anyone, including children under 13. The extension is safe for all ages.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>If this policy is updated, the "Last updated" date at the top of this page will change. We will never retroactively introduce data collection without explicit user notice.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this privacy policy? Open an issue on GitHub:</p>
+  <p><a href="https://github.com/alexandreybasta-cyber/CookieGhost" style="color:#58A6FF">https://github.com/alexandreybasta-cyber/CookieGhost</a></p>
+</main>
+
+<footer>
+  <p>👻 CookieGhost — Don't block. Don't delete. Poison the well.</p>
+  <p style="margin-top:6px"><a href="https://github.com/alexandreybasta-cyber/CookieGhost">GitHub</a> · <a href="https://alexandreybasta-cyber.github.io/CookieGhost/">Home</a></p>
+</footer>
+
+</body>
+</html>
