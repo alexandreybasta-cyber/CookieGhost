@@ -1,0 +1,46 @@
+====================================
+CHROME WEB STORE LISTING — CookieGhost
+====================================
+
+SHORT DESCRIPTION (max 132 chars):
+Anonymize tracking cookies with realistic random data. Websites work normally — but trackers get garbage.
+
+CATEGORY: Productivity (or Privacy & Security if available)
+
+DETAILED DESCRIPTION:
+---
+CookieGhost doesn't block cookies. It doesn't delete them. It poisons them.
+
+Every website you visit drops tracking cookies to build a profile about you — your browsing habits, interests, purchases, and identity. Traditional privacy tools block or delete these cookies, which often breaks websites or triggers annoying cookie walls.
+
+CookieGhost takes a different approach: it lets tracking cookies exist, but replaces their values with realistic random data in real-time. Google Analytics gets a fake client ID. Facebook gets a bogus pixel ID. Trackers think they're working, but your profile is pure noise.
+
+HOW IT WORKS:
+- Automatically detects 60+ known tracking cookies (Google Analytics, Facebook, TikTok, LinkedIn, HubSpot, and more)
+- Replaces values with format-correct random data that passes validation
+- Preserves functional cookies (login sessions, CSRF tokens, preferences) so websites work normally
+- Strips cookies entirely from 50+ hardcore tracker domains
+
+THREE PROTECTION MODES:
+- Aggressive: Randomizes all uncertain cookies
+- Balanced: Smart classification with conservative defaults
+- Gentle: Only randomizes confirmed tracking cookies
+
+PRIVACY FIRST:
+- Zero data collection — everything stays on your device
+- No accounts, no analytics, no telemetry
+- Open source and fully auditable
+
+Don't block. Don't delete. Poison the well.
+---
+
+SINGLE PURPOSE DESCRIPTION (required by Chrome):
+CookieGhost replaces tracking cookie values with random data so websites work normally but ad trackers receive meaningless information.
+
+PERMISSIONS JUSTIFICATION:
+- cookies: Core functionality — detecting and modifying tracking cookies in real-time
+- storage: Saving user settings (protection mode, whitelisted sites) locally
+- activeTab: Displaying per-site cookie statistics in the extension popup
+- alarms: Scheduling periodic randomization seed resets
+- declarativeNetRequest + declarativeNetRequestWithHostAccess: Blocking cookies from known tracker domains via header modification rules
+- host_permissions <all_urls>: Required to intercept tracking cookies on any website the user visits. The extension must monitor cookie changes across all sites to provide comprehensive tracking protection.
