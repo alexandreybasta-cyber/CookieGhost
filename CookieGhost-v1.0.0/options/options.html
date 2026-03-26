@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="options.css">
+  <title>CookieGhost — Settings</title>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="ghost-icon">👻</span>
+        <h1>CookieGhost Settings</h1>
+      </div>
+      <span class="version">v1.0.0</span>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <button class="nav-btn active" data-tab="protection">Protection</button>
+      <button class="nav-btn" data-tab="sites">Sites</button>
+      <button class="nav-btn" data-tab="cookies">Cookies</button>
+      <button class="nav-btn" data-tab="stats">Statistics</button>
+      <button class="nav-btn" data-tab="advanced">Advanced</button>
+    </nav>
+
+    <!-- Tab: Protection Mode -->
+    <section class="tab-content active" id="tab-protection">
+      <div class="card">
+        <h2>Protection Mode</h2>
+        <p class="card-desc">Choose how CookieGhost handles cookies it can't confidently classify.</p>
+        <div class="mode-options">
+          <label class="mode-option">
+            <input type="radio" name="protectionMode" value="aggressive">
+            <div class="mode-info">
+              <strong>Aggressive</strong>
+              <span>Randomize all uncertain cookies. Maximum privacy — may rarely affect site functionality.</span>
+            </div>
+          </label>
+          <label class="mode-option">
+            <input type="radio" name="protectionMode" value="balanced" checked>
+            <div class="mode-info">
+              <strong>Balanced</strong>
+              <span>Smart classification with moderate randomization. Recommended for most users.</span>
+            </div>
+          </label>
+          <label class="mode-option">
+            <input type="radio" name="protectionMode" value="gentle">
+            <div class="mode-info">
+              <strong>Gentle</strong>
+              <span>Only randomize cookies confidently identified as trackers. Maximum compatibility.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Session Behavior</h2>
+        <p class="card-desc">Control when randomized cookie values are regenerated.</p>
+        <div class="form-group">
+          <label for="resetInterval">Reset randomized values</label>
+          <select id="resetInterval">
+            <option value="session">Every browser session</option>
+            <option value="hour">Every hour</option>
+            <option value="never">Never (within session)</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary" id="clearSeedsBtn">Clear All Randomized Values Now</button>
+      </div>
+    </section>
+
+    <!-- Tab: Sites -->
+    <section class="tab-content" id="tab-sites">
+      <div class="card">
+        <h2>Whitelisted Sites</h2>
+        <p class="card-desc">Cookies on these sites will never be randomized.</p>
+        <div class="domain-list" id="whitelistContainer">
+          <div class="empty-state">No whitelisted sites</div>
+        </div>
+        <div class="add-domain">
+          <input type="text" id="whitelistInput" placeholder="example.com">
+          <button class="btn btn-small" id="addWhitelistBtn">Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Blacklisted Sites</h2>
+        <p class="card-desc">All cookies on these sites will be randomized, regardless of type.</p>
+        <div class="domain-list" id="blacklistContainer">
+          <div class="empty-state">No blacklisted sites</div>
+        </div>
+        <div class="add-domain">
+          <input type="text" id="blacklistInput" placeholder="tracker.example.com">
+          <button class="btn btn-small btn-danger" id="addBlacklistBtn">Add</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Cookies -->
+    <section class="tab-content" id="tab-cookies">
+      <div class="card">
+        <h2>Tracking Cookie Patterns</h2>
+        <p class="card-desc">Cookies matching these patterns are always randomized.</p>
+        <div class="cookie-list" id="trackingList"></div>
+      </div>
+
+      <div class="card">
+        <h2>Functional Cookie Patterns</h2>
+        <p class="card-desc">Cookies matching these patterns are never touched.</p>
+        <div class="cookie-list" id="functionalList"></div>
+      </div>
+
+      <div class="card">
+        <h2>Import / Export Rules</h2>
+        <div class="import-export">
+          <button class="btn btn-secondary" id="exportRulesBtn">Export Custom Rules</button>
+          <button class="btn btn-secondary" id="importRulesBtn">Import Custom Rules</button>
+          <input type="file" id="importFileInput" accept=".json" hidden>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Statistics -->
+    <section class="tab-content" id="tab-stats">
+      <div class="card">
+        <h2>All-Time Statistics</h2>
+        <div class="stats-overview">
+          <div class="stat-big">
+            <span class="stat-big-number" id="allTimeRandomized">0</span>
+            <span class="stat-big-label">Total Randomized</span>
+          </div>
+          <div class="stat-big">
+            <span class="stat-big-number preserved" id="allTimePreserved">0</span>
+            <span class="stat-big-label">Total Preserved</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Top Tracker Cookies</h2>
+        <div class="bar-chart" id="topCookiesChart"></div>
+      </div>
+
+      <div class="card">
+        <h2>Top Tracker Domains</h2>
+        <div class="bar-chart" id="topDomainsChart"></div>
+      </div>
+
+      <div class="card">
+        <h2>Daily Activity (Last 30 Days)</h2>
+        <div class="daily-chart" id="dailyChart"></div>
+      </div>
+
+      <div class="card">
+        <button class="btn btn-secondary" id="resetSessionBtn">Reset Session Stats</button>
+        <button class="btn btn-danger" id="resetAllBtn">Reset All Stats</button>
+      </div>
+    </section>
+
+    <!-- Tab: Advanced -->
+    <section class="tab-content" id="tab-advanced">
+      <div class="card">
+        <h2>Chrome-Specific Options</h2>
+        <label class="checkbox-option">
+          <input type="checkbox" id="enableDocOverride" checked>
+          <div>
+            <strong>document.cookie override</strong>
+            <span>Intercept JavaScript cookie access in the page context.</span>
+          </div>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" id="enableDNR" checked>
+          <div>
+            <strong>Tracker domain blocking (DNR)</strong>
+            <span>Strip cookies from requests to known tracker domains as a fallback.</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Debug</h2>
+        <label class="checkbox-option">
+          <input type="checkbox" id="debugMode">
+          <div>
+            <strong>Debug mode</strong>
+            <span>Log all cookie operations to the browser console.</span>
+          </div>
+        </label>
+        <button class="btn btn-secondary" id="exportLogsBtn">Export Debug Logs</button>
+      </div>
+    </section>
+
+    <!-- Save indicator -->
+    <div class="save-indicator" id="saveIndicator">Settings saved</div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

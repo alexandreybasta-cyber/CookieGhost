@@ -1,0 +1,149 @@
+{
+  "formats": {
+    "_ga": {
+      "pattern": "^_ga$",
+      "template": "GA1.2.{{randInt(1000000000,9999999999)}}.{{randInt(1000000000,9999999999)}}",
+      "example": "GA1.2.1234567890.1234567890"
+    },
+    "_ga_*": {
+      "pattern": "^_ga_.+$",
+      "template": "GS1.1.{{randInt(1000000000,9999999999)}}.{{randInt(1,50)}}.1.{{randInt(1000000000,9999999999)}}.0.0.0",
+      "example": "GS1.1.1234567890.5.1.1234567890.0.0.0"
+    },
+    "_gid": {
+      "pattern": "^_gid$",
+      "template": "GA1.2.{{randInt(100000000,999999999)}}.{{randInt(1000000000,9999999999)}}",
+      "example": "GA1.2.123456789.1234567890"
+    },
+    "_gat": {
+      "pattern": "^_gat.*$",
+      "template": "1",
+      "example": "1"
+    },
+    "_fbp": {
+      "pattern": "^_fbp$",
+      "template": "fb.1.{{recentTimestamp}}.{{randInt(1000000000,9999999999)}}",
+      "example": "fb.1.1674567890123.1234567890"
+    },
+    "_fbc": {
+      "pattern": "^_fbc$",
+      "template": "fb.1.{{recentTimestamp}}.{{randHex(20)}}",
+      "example": "fb.1.1674567890123.abcdef1234567890abcd"
+    },
+    "fr": {
+      "pattern": "^fr$",
+      "template": "{{randAlphaNum(22)}}.{{randAlphaNum(22)}}.{{randAlphaNum(6)}}",
+      "example": "0aBcDeFgHiJkLmNoPqRsTu.0aBcDeFgHiJkLmNoPqRsTu.AbCdEf"
+    },
+    "datr": {
+      "pattern": "^datr$",
+      "template": "{{randAlphaNum(24)}}",
+      "example": "AbCdEfGhIjKlMnOpQrStUvWx"
+    },
+    "_gcl_au": {
+      "pattern": "^_gcl_au$",
+      "template": "1.1.{{randInt(100000000,999999999)}}.{{randInt(1000000000,9999999999)}}",
+      "example": "1.1.123456789.1234567890"
+    },
+    "_gcl_aw": {
+      "pattern": "^_gcl_aw$",
+      "template": "GCL.{{randInt(1000000000,9999999999)}}.{{randHex(20)}}",
+      "example": "GCL.1234567890.abcdef1234567890abcd"
+    },
+    "_hjid": {
+      "pattern": "^_hjid$",
+      "template": "{{randUUID}}",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "_hjSession_*": {
+      "pattern": "^_hjSession_.+$",
+      "template": "{\"r\":{{randInt(1,999)}},\"c\":{{recentTimestamp}}}",
+      "example": "{\"r\":42,\"c\":1674567890123}"
+    },
+    "_hjSessionUser_*": {
+      "pattern": "^_hjSessionUser_.+$",
+      "template": "{{randUUID}}",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "_uetsid": {
+      "pattern": "^_uetsid$",
+      "template": "{{randHex(32)}}",
+      "example": "abcdef1234567890abcdef1234567890"
+    },
+    "_uetvid": {
+      "pattern": "^_uetvid$",
+      "template": "{{randHex(32)}}",
+      "example": "abcdef1234567890abcdef1234567890"
+    },
+    "_ttp": {
+      "pattern": "^_ttp$",
+      "template": "{{randAlphaNum(24)}}",
+      "example": "AbCdEfGhIjKlMnOpQrStUvWx"
+    },
+    "hubspotutk": {
+      "pattern": "^hubspotutk$",
+      "template": "{{randHex(32)}}",
+      "example": "abcdef1234567890abcdef1234567890"
+    },
+    "__hstc": {
+      "pattern": "^__hstc$",
+      "template": "{{randHex(32)}}.{{randInt(1000000000,9999999999)}}.{{recentTimestamp}}.{{recentTimestamp}}.{{recentTimestamp}}.1",
+      "example": "abcdef1234567890abcdef1234567890.1234567890.1674567890.1674567890.1674567890.1"
+    },
+    "__hssc": {
+      "pattern": "^__hssc$",
+      "template": "{{randHex(32)}}.{{randInt(1,20)}}.{{recentTimestamp}}",
+      "example": "abcdef1234567890abcdef1234567890.3.1674567890"
+    },
+    "li_sugr": {
+      "pattern": "^li_sugr$",
+      "template": "{{randHex(32)}}",
+      "example": "abcdef1234567890abcdef1234567890"
+    },
+    "bcookie": {
+      "pattern": "^bcookie$",
+      "template": "\"v=2&{{randHex(32)}}\"",
+      "example": "\"v=2&abcdef1234567890abcdef1234567890\""
+    },
+    "_clck": {
+      "pattern": "^_clck$",
+      "template": "{{randAlphaNum(16)}}|1|{{randAlphaNum(8)}}|0",
+      "example": "AbCdEfGh12345678|1|AbCdEfGh|0"
+    },
+    "mp_*_mixpanel": {
+      "pattern": "^mp_.+_mixpanel$",
+      "template": "{{mixpanelJSON}}",
+      "example": "{\"distinct_id\":\"uuid\",\"$device_id\":\"hex16\"}"
+    },
+    "ajs_anonymous_id": {
+      "pattern": "^ajs_anonymous_id$",
+      "template": "{{randUUID}}",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "_rdt_uuid": {
+      "pattern": "^_rdt_uuid$",
+      "template": "{{randUUID}}",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "_scid": {
+      "pattern": "^_scid$",
+      "template": "{{randUUID}}",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "__default_uuid": {
+      "pattern": null,
+      "template": "{{randUUID}}",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "__default_hex": {
+      "pattern": null,
+      "template": "{{randHex(32)}}",
+      "example": "abcdef1234567890abcdef1234567890"
+    },
+    "__default_alphanum": {
+      "pattern": null,
+      "template": "{{randAlphaNum(24)}}",
+      "example": "AbCdEfGhIjKlMnOpQrStUvWx"
+    }
+  }
+}

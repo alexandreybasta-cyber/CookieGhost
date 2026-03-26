@@ -1,0 +1,530 @@
+[
+  {
+    "name": "_ga",
+    "pattern": "^_ga$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "GA1.2.{randInt10}.{randInt10}",
+    "description": "Google Analytics client ID"
+  },
+  {
+    "name": "_ga_*",
+    "pattern": "^_ga_.+$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "GS1.1.{randInt10}.{randInt2}.1.{randInt10}.0.0.0",
+    "description": "Google Analytics 4 session cookie"
+  },
+  {
+    "name": "_gid",
+    "pattern": "^_gid$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "GA1.2.{randInt9}.{randInt10}",
+    "description": "Google Analytics daily unique visitor ID"
+  },
+  {
+    "name": "_gat",
+    "pattern": "^_gat.*$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "1",
+    "description": "Google Analytics throttle request rate"
+  },
+  {
+    "name": "_gac_*",
+    "pattern": "^_gac_.+$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "1.{randInt10}.{randHex20}",
+    "description": "Google Ads conversion cookie"
+  },
+  {
+    "name": "__utma",
+    "pattern": "^__utma$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "{randInt9}.{randInt10}.{randInt10}.{randInt10}.{randInt10}.{randInt2}",
+    "description": "Google Analytics legacy visitor ID"
+  },
+  {
+    "name": "__utmb",
+    "pattern": "^__utmb$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "{randInt9}.{randInt2}.10.{randInt10}",
+    "description": "Google Analytics legacy session cookie"
+  },
+  {
+    "name": "__utmc",
+    "pattern": "^__utmc$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "{randInt9}",
+    "description": "Google Analytics legacy session indicator"
+  },
+  {
+    "name": "__utmz",
+    "pattern": "^__utmz$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "{randInt9}.{randInt10}.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)",
+    "description": "Google Analytics legacy traffic source"
+  },
+  {
+    "name": "__utmv",
+    "pattern": "^__utmv$",
+    "category": "analytics",
+    "company": "Google",
+    "format": "{randInt9}.|1={randAlpha8}=user=1",
+    "description": "Google Analytics legacy custom variable"
+  },
+  {
+    "name": "_fbp",
+    "pattern": "^_fbp$",
+    "category": "advertising",
+    "company": "Facebook",
+    "format": "fb.1.{timestamp}.{randInt10}",
+    "description": "Facebook pixel tracking"
+  },
+  {
+    "name": "_fbc",
+    "pattern": "^_fbc$",
+    "category": "advertising",
+    "company": "Facebook",
+    "format": "fb.1.{timestamp}.{randHex20}",
+    "description": "Facebook click ID"
+  },
+  {
+    "name": "fr",
+    "pattern": "^fr$",
+    "category": "advertising",
+    "company": "Facebook",
+    "format": "{randAlphaNum22}.{randAlphaNum22}.{randAlphaNum6}",
+    "description": "Facebook primary ad tracking cookie"
+  },
+  {
+    "name": "datr",
+    "pattern": "^datr$",
+    "category": "social",
+    "company": "Facebook",
+    "format": "{randAlphaNum24}",
+    "description": "Facebook browser identification"
+  },
+  {
+    "name": "sb",
+    "pattern": "^sb$",
+    "category": "social",
+    "company": "Facebook",
+    "format": "{randAlphaNum24}",
+    "description": "Facebook browser identification"
+  },
+  {
+    "name": "_gcl_au",
+    "pattern": "^_gcl_au$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "1.1.{randInt9}.{randInt10}",
+    "description": "Google Ads conversion linker"
+  },
+  {
+    "name": "_gcl_aw",
+    "pattern": "^_gcl_aw$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "GCL.{randInt10}.{randHex20}",
+    "description": "Google Ads click conversion"
+  },
+  {
+    "name": "_gcl_dc",
+    "pattern": "^_gcl_dc$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "GCL.{randInt10}.{randHex20}",
+    "description": "Google Display & Video 360 conversion"
+  },
+  {
+    "name": "IDE",
+    "pattern": "^IDE$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex32}",
+    "description": "DoubleClick ad serving cookie"
+  },
+  {
+    "name": "DSID",
+    "pattern": "^DSID$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex16}",
+    "description": "DoubleClick ad personalization"
+  },
+  {
+    "name": "id",
+    "pattern": "^id$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex32}",
+    "description": "DoubleClick ad tracking ID"
+  },
+  {
+    "name": "ANID",
+    "pattern": "^ANID$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex32}",
+    "description": "Google advertising ID"
+  },
+  {
+    "name": "NID",
+    "pattern": "^NID$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randInt3}={randAlphaNum64}",
+    "description": "Google NID preference cookie"
+  },
+  {
+    "name": "1P_JAR",
+    "pattern": "^1P_JAR$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{year}-{month}-{day}-{randInt2}",
+    "description": "Google ad personalization"
+  },
+  {
+    "name": "_hjid",
+    "pattern": "^_hjid$",
+    "category": "analytics",
+    "company": "Hotjar",
+    "format": "{randUUID}",
+    "description": "Hotjar user ID"
+  },
+  {
+    "name": "_hjSession_*",
+    "pattern": "^_hjSession_.+$",
+    "category": "analytics",
+    "company": "Hotjar",
+    "format": "{hjSession}",
+    "description": "Hotjar session data"
+  },
+  {
+    "name": "_hjSessionUser_*",
+    "pattern": "^_hjSessionUser_.+$",
+    "category": "analytics",
+    "company": "Hotjar",
+    "format": "{randUUID}",
+    "description": "Hotjar session user ID"
+  },
+  {
+    "name": "_tt_enable_cookie",
+    "pattern": "^_tt_enable_cookie$",
+    "category": "advertising",
+    "company": "TikTok",
+    "format": "1",
+    "description": "TikTok cookie consent flag"
+  },
+  {
+    "name": "_ttp",
+    "pattern": "^_ttp$",
+    "category": "advertising",
+    "company": "TikTok",
+    "format": "{randAlphaNum24}",
+    "description": "TikTok tracking pixel"
+  },
+  {
+    "name": "_uetsid",
+    "pattern": "^_uetsid$",
+    "category": "advertising",
+    "company": "Microsoft",
+    "format": "{randHex32}",
+    "description": "Microsoft Bing Ads UET tag"
+  },
+  {
+    "name": "_uetvid",
+    "pattern": "^_uetvid$",
+    "category": "advertising",
+    "company": "Microsoft",
+    "format": "{randHex32}",
+    "description": "Microsoft Bing Ads visitor ID"
+  },
+  {
+    "name": "_pin_unauth",
+    "pattern": "^_pin_unauth$",
+    "category": "social",
+    "company": "Pinterest",
+    "format": "{randHex32}",
+    "description": "Pinterest unauthenticated tracking"
+  },
+  {
+    "name": "_pinterest_sess",
+    "pattern": "^_pinterest_sess$",
+    "category": "social",
+    "company": "Pinterest",
+    "format": "{randAlphaNum64}",
+    "description": "Pinterest session tracking"
+  },
+  {
+    "name": "_li_fat_id",
+    "pattern": "^_li_fat_id$",
+    "category": "advertising",
+    "company": "LinkedIn",
+    "format": "{randHex32}",
+    "description": "LinkedIn first-party ad tracking"
+  },
+  {
+    "name": "li_sugr",
+    "pattern": "^li_sugr$",
+    "category": "advertising",
+    "company": "LinkedIn",
+    "format": "{randHex32}",
+    "description": "LinkedIn browser ID"
+  },
+  {
+    "name": "bcookie",
+    "pattern": "^bcookie$",
+    "category": "social",
+    "company": "LinkedIn",
+    "format": "\"v=2&{randHex32}\"",
+    "description": "LinkedIn browser cookie"
+  },
+  {
+    "name": "_clck",
+    "pattern": "^_clck$",
+    "category": "analytics",
+    "company": "Microsoft",
+    "format": "{randAlphaNum16}|1|{randAlphaNum8}|0",
+    "description": "Microsoft Clarity user ID"
+  },
+  {
+    "name": "_clsk",
+    "pattern": "^_clsk$",
+    "category": "analytics",
+    "company": "Microsoft",
+    "format": "{randAlphaNum16}|{randInt10}|{randInt1}|{randInt1}",
+    "description": "Microsoft Clarity session data"
+  },
+  {
+    "name": "mp_*_mixpanel",
+    "pattern": "^mp_.+_mixpanel$",
+    "category": "analytics",
+    "company": "Mixpanel",
+    "format": "{mixpanelJSON}",
+    "description": "Mixpanel analytics cookie"
+  },
+  {
+    "name": "ajs_anonymous_id",
+    "pattern": "^ajs_anonymous_id$",
+    "category": "analytics",
+    "company": "Segment",
+    "format": "{randUUID}",
+    "description": "Segment anonymous user ID"
+  },
+  {
+    "name": "ajs_user_id",
+    "pattern": "^ajs_user_id$",
+    "category": "analytics",
+    "company": "Segment",
+    "format": "{randUUID}",
+    "description": "Segment user ID"
+  },
+  {
+    "name": "hubspotutk",
+    "pattern": "^hubspotutk$",
+    "category": "analytics",
+    "company": "HubSpot",
+    "format": "{randHex32}",
+    "description": "HubSpot visitor tracking"
+  },
+  {
+    "name": "__hstc",
+    "pattern": "^__hstc$",
+    "category": "analytics",
+    "company": "HubSpot",
+    "format": "{randHex32}.{randInt10}.{timestamp}.{timestamp}.{timestamp}.1",
+    "description": "HubSpot main tracking cookie"
+  },
+  {
+    "name": "__hssc",
+    "pattern": "^__hssc$",
+    "category": "analytics",
+    "company": "HubSpot",
+    "format": "{randHex32}.{randInt1}.{timestamp}",
+    "description": "HubSpot session cookie"
+  },
+  {
+    "name": "__hssrc",
+    "pattern": "^__hssrc$",
+    "category": "analytics",
+    "company": "HubSpot",
+    "format": "1",
+    "description": "HubSpot session reset check"
+  },
+  {
+    "name": "_mkto_trk",
+    "pattern": "^_mkto_trk$",
+    "category": "remarketing",
+    "company": "Marketo",
+    "format": "id:{randInt3}-{randAlphaNum3}-{randInt3}&token:_mch-{randAlphaNum16}",
+    "description": "Marketo tracking cookie"
+  },
+  {
+    "name": "_biz_uid",
+    "pattern": "^_biz_uid$",
+    "category": "remarketing",
+    "company": "Bizible",
+    "format": "{randHex32}",
+    "description": "Bizible unique user ID"
+  },
+  {
+    "name": "_biz_nA",
+    "pattern": "^_biz_nA$",
+    "category": "remarketing",
+    "company": "Bizible",
+    "format": "{randInt1}",
+    "description": "Bizible tracking flag"
+  },
+  {
+    "name": "_rdt_uuid",
+    "pattern": "^_rdt_uuid$",
+    "category": "advertising",
+    "company": "Reddit",
+    "format": "{randUUID}",
+    "description": "Reddit ad conversion tracking"
+  },
+  {
+    "name": "rdt_*",
+    "pattern": "^rdt_.+$",
+    "category": "advertising",
+    "company": "Reddit",
+    "format": "{randHex32}",
+    "description": "Reddit tracking cookie"
+  },
+  {
+    "name": "_scid",
+    "pattern": "^_scid$",
+    "category": "advertising",
+    "company": "Snapchat",
+    "format": "{randUUID}",
+    "description": "Snapchat cookie ID"
+  },
+  {
+    "name": "_scid_r",
+    "pattern": "^_scid_r$",
+    "category": "advertising",
+    "company": "Snapchat",
+    "format": "{randUUID}",
+    "description": "Snapchat cookie ID (referrer)"
+  },
+  {
+    "name": "sc_anonymous_id",
+    "pattern": "^sc_anonymous_id$",
+    "category": "advertising",
+    "company": "Snapchat",
+    "format": "{randUUID}",
+    "description": "Snapchat anonymous ID"
+  },
+  {
+    "name": "_derived_epik",
+    "pattern": "^_derived_epik$",
+    "category": "advertising",
+    "company": "Pinterest",
+    "format": "{randAlphaNum32}",
+    "description": "Pinterest enhanced match"
+  },
+  {
+    "name": "__gads",
+    "pattern": "^__gads$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "ID={randHex16}:T={randInt10}:RT={randInt10}:S=ALNI_M{randAlphaNum16}",
+    "description": "Google AdSense cookie"
+  },
+  {
+    "name": "__gpi",
+    "pattern": "^__gpi$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "UID={randHex16}:T={randInt10}:RT={randInt10}:S=ALNI_M{randAlphaNum16}",
+    "description": "Google Publisher Interests"
+  },
+  {
+    "name": "test_cookie",
+    "pattern": "^test_cookie$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "CheckForPermission",
+    "description": "DoubleClick test cookie"
+  },
+  {
+    "name": "_opt_awcid",
+    "pattern": "^_opt_awcid$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex16}",
+    "description": "Google Optimize Ads click ID"
+  },
+  {
+    "name": "_opt_awmid",
+    "pattern": "^_opt_awmid$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex16}",
+    "description": "Google Optimize Ads campaign ID"
+  },
+  {
+    "name": "_opt_awgid",
+    "pattern": "^_opt_awgid$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex16}",
+    "description": "Google Optimize Ads group ID"
+  },
+  {
+    "name": "_opt_awkid",
+    "pattern": "^_opt_awkid$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex16}",
+    "description": "Google Optimize Ads keyword ID"
+  },
+  {
+    "name": "_opt_utmc",
+    "pattern": "^_opt_utmc$",
+    "category": "advertising",
+    "company": "Google",
+    "format": "{randHex16}",
+    "description": "Google Optimize UTM campaign"
+  },
+  {
+    "name": "_omappvp",
+    "pattern": "^_omappvp$",
+    "category": "remarketing",
+    "company": "OptinMonster",
+    "format": "{randHex32}",
+    "description": "OptinMonster pageview tracking"
+  },
+  {
+    "name": "_omappvs",
+    "pattern": "^_omappvs$",
+    "category": "remarketing",
+    "company": "OptinMonster",
+    "format": "{timestamp}",
+    "description": "OptinMonster session tracking"
+  },
+  {
+    "name": "ki_r",
+    "pattern": "^ki_r$",
+    "category": "remarketing",
+    "company": "KISSmetrics",
+    "format": "{randHex32}",
+    "description": "KISSmetrics referrer tracking"
+  },
+  {
+    "name": "ki_t",
+    "pattern": "^ki_t$",
+    "category": "remarketing",
+    "company": "KISSmetrics",
+    "format": "{randInt10}%3B{randInt10}%3B{randInt10}%3B{randInt1}%3B{randInt1}",
+    "description": "KISSmetrics timestamp tracking"
+  }
+]

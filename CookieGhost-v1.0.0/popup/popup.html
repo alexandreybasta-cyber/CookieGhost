@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=380">
+  <link rel="stylesheet" href="popup.css">
+  <title>CookieGhost</title>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <span class="ghost-icon" id="ghostIcon">👻</span>
+      <span class="brand-name">CookieGhost</span>
+    </div>
+    <label class="toggle-switch">
+      <input type="checkbox" id="enableToggle" checked>
+      <span class="toggle-slider"></span>
+    </label>
+  </header>
+
+  <!-- Session Stats -->
+  <section class="stats-section">
+    <h3 class="section-label">THIS SESSION</h3>
+    <div class="stats-grid">
+      <div class="stat-card stat-randomized">
+        <span class="stat-number" id="statRandomized">0</span>
+        <span class="stat-label">Randomized</span>
+      </div>
+      <div class="stat-card stat-preserved">
+        <span class="stat-number" id="statPreserved">0</span>
+        <span class="stat-label">Preserved</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Current Site -->
+  <section class="site-section">
+    <h3 class="section-label">CURRENT SITE: <span id="currentDomain">—</span></h3>
+    <div class="site-stats" id="siteStats">
+      <div class="site-stat">
+        <span class="dot dot-orange"></span>
+        <span id="siteRandomized">0</span> cookies randomized
+      </div>
+      <div class="site-stat">
+        <span class="dot dot-green"></span>
+        <span id="sitePreserved">0</span> cookies preserved
+      </div>
+    </div>
+    <div class="site-actions">
+      <button class="btn-small" id="whitelistBtn" title="Whitelist this site">Allow Site</button>
+      <button class="btn-small btn-danger" id="blacklistBtn" title="Blacklist this site">Block All</button>
+    </div>
+  </section>
+
+  <!-- Protection Mode -->
+  <section class="mode-section">
+    <div class="mode-buttons">
+      <button class="mode-btn" id="modeAggressive" data-mode="aggressive" title="Randomize all uncertain cookies">
+        Aggressive
+      </button>
+      <button class="mode-btn active" id="modeBalanced" data-mode="balanced" title="Smart classification">
+        Balanced
+      </button>
+      <button class="mode-btn" id="modeGentle" data-mode="gentle" title="Preserve all uncertain cookies">
+        Gentle
+      </button>
+    </div>
+  </section>
+
+  <!-- Activity Feed -->
+  <section class="activity-section">
+    <h3 class="section-label">RECENT ACTIVITY</h3>
+    <div class="activity-feed" id="activityFeed">
+      <div class="activity-empty">No activity yet</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <button class="footer-btn" id="settingsBtn">Settings</button>
+    <button class="footer-btn" id="dashboardBtn">Dashboard</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

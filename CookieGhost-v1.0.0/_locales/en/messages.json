@@ -1,0 +1,34 @@
+{
+  "extensionName": {
+    "message": "CookieGhost",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Anonymize your cookies. Websites work normally — but trackers get garbage data.",
+    "description": "The description of the extension"
+  },
+  "popupTitle": {
+    "message": "CookieGhost",
+    "description": "Title shown in the popup"
+  },
+  "statusEnabled": {
+    "message": "Protection active",
+    "description": "Status when extension is enabled"
+  },
+  "statusDisabled": {
+    "message": "Protection paused",
+    "description": "Status when extension is disabled"
+  },
+  "modeAggressive": {
+    "message": "Aggressive",
+    "description": "Aggressive protection mode"
+  },
+  "modeBalanced": {
+    "message": "Balanced",
+    "description": "Balanced protection mode"
+  },
+  "modeGentle": {
+    "message": "Gentle",
+    "description": "Gentle protection mode"
+  }
+}
