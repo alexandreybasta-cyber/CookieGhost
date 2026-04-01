@@ -1,0 +1,152 @@
+[
+  {
+    "name": "PHPSESSID",
+    "pattern": "^PHPSESSID$",
+    "category": "session",
+    "description": "PHP session identifier"
+  },
+  {
+    "name": "JSESSIONID",
+    "pattern": "^JSESSIONID$",
+    "category": "session",
+    "description": "Java servlet session identifier"
+  },
+  {
+    "name": "ASP.NET_SessionId",
+    "pattern": "^ASP\\.NET_SessionId$",
+    "category": "session",
+    "description": "ASP.NET session identifier"
+  },
+  {
+    "name": "connect.sid",
+    "pattern": "^connect\\.sid$",
+    "category": "session",
+    "description": "Express.js session identifier"
+  },
+  {
+    "name": "__cf_bm",
+    "pattern": "^__cf_bm$",
+    "category": "security",
+    "description": "Cloudflare bot management"
+  },
+  {
+    "name": "cf_clearance",
+    "pattern": "^cf_clearance$",
+    "category": "security",
+    "description": "Cloudflare challenge clearance"
+  },
+  {
+    "name": "__cfduid",
+    "pattern": "^__cfduid$",
+    "category": "security",
+    "description": "Cloudflare user identification (deprecated)"
+  },
+  {
+    "name": "AWSALB",
+    "pattern": "^AWSALB$",
+    "category": "infrastructure",
+    "description": "AWS Application Load Balancer sticky session"
+  },
+  {
+    "name": "AWSALBCORS",
+    "pattern": "^AWSALBCORS$",
+    "category": "infrastructure",
+    "description": "AWS ALB sticky session (CORS)"
+  },
+  {
+    "name": "csrftoken",
+    "pattern": "^csrftoken$",
+    "category": "security",
+    "description": "Django CSRF token"
+  },
+  {
+    "name": "_csrf",
+    "pattern": "^_csrf$",
+    "category": "security",
+    "description": "CSRF protection token"
+  },
+  {
+    "name": "XSRF-TOKEN",
+    "pattern": "^XSRF-TOKEN$",
+    "category": "security",
+    "description": "XSRF protection token"
+  },
+  {
+    "name": "__Host-*",
+    "pattern": "^__Host-.+$",
+    "category": "security",
+    "description": "Host-prefixed secure cookie"
+  },
+  {
+    "name": "__Secure-*",
+    "pattern": "^__Secure-.+$",
+    "category": "security",
+    "description": "Secure-prefixed cookie"
+  },
+  {
+    "name": "wordpress_logged_in_*",
+    "pattern": "^wordpress_logged_in_.+$",
+    "category": "auth",
+    "description": "WordPress login session"
+  },
+  {
+    "name": "wp-settings-*",
+    "pattern": "^wp-settings-.+$",
+    "category": "preferences",
+    "description": "WordPress user settings"
+  },
+  {
+    "name": "laravel_session",
+    "pattern": "^laravel_session$",
+    "category": "session",
+    "description": "Laravel framework session"
+  },
+  {
+    "name": "rack.session",
+    "pattern": "^rack\\.session$",
+    "category": "session",
+    "description": "Ruby Rack session"
+  },
+  {
+    "name": "_session_id",
+    "pattern": "^_session_id$",
+    "category": "session",
+    "description": "Rails session identifier"
+  },
+  {
+    "name": "express.sid",
+    "pattern": "^express\\.sid$",
+    "category": "session",
+    "description": "Express session identifier"
+  },
+  {
+    "name": "auth_token",
+    "pattern": "^auth_token$",
+    "category": "auth",
+    "description": "Authentication token"
+  },
+  {
+    "name": "access_token",
+    "pattern": "^access_token$",
+    "category": "auth",
+    "description": "OAuth access token"
+  },
+  {
+    "name": "refresh_token",
+    "pattern": "^refresh_token$",
+    "category": "auth",
+    "description": "OAuth refresh token"
+  },
+  {
+    "name": "remember_me",
+    "pattern": "^remember_me$",
+    "category": "auth",
+    "description": "Persistent login token"
+  },
+  {
+    "name": "csrf_token",
+    "pattern": "^csrf_token$",
+    "category": "security",
+    "description": "CSRF protection token"
+  }
+]

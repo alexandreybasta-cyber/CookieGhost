@@ -1,0 +1,63 @@
+{
+  "manifest_version": 2,
+  "name": "CookieGhost",
+  "version": "1.0.0",
+  "description": "Anonymize your cookies. Websites work normally — but trackers get garbage data.",
+  "permissions": [
+    "cookies",
+    "storage",
+    "activeTab",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "lib/browser-compat.js",
+      "lib/cookie-parser.js",
+      "lib/random-generator.js",
+      "background/cookie-classifier.js",
+      "background/cookie-randomizer.js",
+      "background/session-manager.js",
+      "background/stats-tracker.js",
+      "background/cookie-interceptor.js",
+      "background/service-worker.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/injector.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "web_accessible_resources": [
+    "content/document-cookie-override.js"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "cookieghost@extension",
+      "strict_min_version": "109.0"
+    }
+  }
+}

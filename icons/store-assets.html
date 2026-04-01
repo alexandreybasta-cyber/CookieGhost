@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CookieGhost — Store Assets Generator</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; font-family: -apple-system, sans-serif; padding: 20px; color: white; }
+  h2 { color: #58A6FF; margin: 20px 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+  canvas { display: block; }
+  .asset { margin-bottom: 30px; }
+  .label { font-size: 11px; color: #8B949E; margin-top: 6px; }
+  a.dl { display: inline-block; margin-top: 6px; padding: 4px 12px; background: #58A6FF; color: #000; border-radius: 4px; font-size: 11px; text-decoration: none; font-weight: bold; }
+  #all-btn { margin: 10px 0 30px; padding: 8px 20px; background: #F0883E; color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
+</style>
+</head>
+<body>
+<button id="all-btn" onclick="downloadAll()">⬇ Download All Assets</button>
+
+<div class="asset"><h2>Store Icon — 128×128</h2><canvas id="c-icon" width="128" height="128"></canvas><div class="label">128×128 PNG</div><a class="dl" onclick="dl('c-icon','cookieghost-icon-128.png')">Download</a></div>
+<div class="asset"><h2>Small Promo — 440×280</h2><canvas id="c-small" width="440" height="280"></canvas><div class="label">440×280 PNG 24-bit</div><a class="dl" onclick="dl('c-small','cookieghost-promo-small.png')">Download</a></div>
+<div class="asset"><h2>Large Banner — 1400×560</h2><canvas id="c-banner" width="1400" height="560"></canvas><div class="label">1400×560 PNG 24-bit</div><a class="dl" onclick="dl('c-banner','cookieghost-banner.png')">Download</a></div>
+<div class="asset"><h2>Screenshot 1 — 1280×800 (Popup UI)</h2><canvas id="c-ss1" width="1280" height="800"></canvas><div class="label">1280×800 PNG 24-bit</div><a class="dl" onclick="dl('c-ss1','cookieghost-screenshot-1.png')">Download</a></div>
+<div class="asset"><h2>Screenshot 2 — 1280×800 (How It Works)</h2><canvas id="c-ss2" width="1280" height="800"></canvas><div class="label">1280×800 PNG 24-bit</div><a class="dl" onclick="dl('c-ss2','cookieghost-screenshot-2.png')">Download</a></div>
+<div class="asset"><h2>Screenshot 3 — 1280×800 (Protection Modes)</h2><canvas id="c-ss3" width="1280" height="800"></canvas><div class="label">1280×800 PNG 24-bit</div><a class="dl" onclick="dl('c-ss3','cookieghost-screenshot-3.png')">Download</a></div>
+
+<script>
+// ─── Colour palette ───────────────────────────────────────────────────────────
+const C = {
+  bg:        '#0D1117',
+  surface:   '#161B22',
+  surface2:  '#21262D',
+  border:    '#30363D',
+  blue:      '#58A6FF',
+  orange:    '#F0883E',
+  green:     '#3FB950',
+  red:       '#F85149',
+  textPri:   '#E6EDF3',
+  textSec:   '#8B949E',
+  ghost:     'rgba(88,166,255,0.15)',
+};
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function rect(ctx, x, y, w, h, r, fill, stroke) {
+  ctx.beginPath();
+  ctx.roundRect(x, y, w, h, r);
+  if (fill)   { ctx.fillStyle   = fill;   ctx.fill();   }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
+}
+
+function text(ctx, str, x, y, size, color, align='left', weight='normal', font='Inter, -apple-system, sans-serif') {
+  ctx.font = `${weight} ${size}px "${font}", -apple-system, sans-serif`;
+  ctx.fillStyle = color;
+  ctx.textAlign = align;
+  ctx.fillText(str, x, y);
+}
+
+function badge(ctx, label, x, y, color) {
+  ctx.font = 'bold 11px monospace';
+  const w = ctx.measureText(label).width + 16;
+  rect(ctx, x, y - 14, w, 20, 4, color + '33');
+  ctx.fillStyle = color;
+  ctx.textAlign = 'left';
+  ctx.fillText(label, x + 8, y);
+}
+
+function ghostShape(ctx, cx, cy, size, opacity = 1) {
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  const s = size;
+
+  // Glow
+  const grd = ctx.createRadialGradient(cx, cy, s*0.1, cx, cy, s*0.8);
+  grd.addColorStop(0, 'rgba(88,166,255,0.35)');
+  grd.addColorStop(1, 'rgba(88,166,255,0)');
+  ctx.beginPath();
+  ctx.arc(cx, cy, s * 0.9, 0, Math.PI * 2);
+  ctx.fillStyle = grd;
+  ctx.fill();
+
+  // Body
+  ctx.beginPath();
+  ctx.arc(cx, cy - s * 0.05, s * 0.52, Math.PI, 0, false);
+  ctx.lineTo(cx + s * 0.52, cy + s * 0.55);
+  // Wavy bottom
+  const waves = 3;
+  const ww = (s * 1.04) / waves;
+  for (let i = waves - 1; i >= 0; i--) {
+    const wx = (cx - s * 0.52) + i * ww + ww / 2;
+    ctx.quadraticCurveTo(wx + ww / 2, cy + s * 0.7, wx, cy + s * 0.55);
+    ctx.quadraticCurveTo(wx - ww / 2, cy + s * 0.4, cx - s * 0.52 + i * ww, cy + s * 0.55);
+  }
+  ctx.closePath();
+
+  const bodyGrd = ctx.createLinearGradient(cx - s * 0.5, cy - s * 0.5, cx + s * 0.5, cy + s * 0.7);
+  bodyGrd.addColorStop(0, 'rgba(230,237,243,0.95)');
+  bodyGrd.addColorStop(1, 'rgba(150,180,220,0.85)');
+  ctx.fillStyle = bodyGrd;
+  ctx.fill();
+
+  // Stroke
+  ctx.strokeStyle = 'rgba(88,166,255,0.6)';
+  ctx.lineWidth = s * 0.025;
+  ctx.stroke();
+
+  // Eyes
+  ctx.fillStyle = C.bg;
+  ctx.beginPath(); ctx.ellipse(cx - s*0.17, cy - s*0.12, s*0.1, s*0.13, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx + s*0.17, cy - s*0.12, s*0.1, s*0.13, 0, 0, Math.PI*2); ctx.fill();
+
+  // Eye shine
+  ctx.fillStyle = C.blue;
+  ctx.beginPath(); ctx.arc(cx - s*0.14, cy - s*0.16, s*0.04, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx + s*0.20, cy - s*0.16, s*0.04, 0, Math.PI*2); ctx.fill();
+
+  // Cookie
+  const ck = cy + s * 0.18;
+  ctx.beginPath(); ctx.arc(cx, ck, s * 0.22, 0, Math.PI * 2);
+  ctx.fillStyle = '#C8A265'; ctx.fill();
+  ctx.strokeStyle = '#8B6914'; ctx.lineWidth = s * 0.02; ctx.stroke();
+  // Chips
+  [[cx-s*.06, ck-s*.04],[cx+s*.07, ck+s*.03],[cx-.02, ck+s*.09]].forEach(([ex,ey]) => {
+    ctx.beginPath(); ctx.arc(ex, ey, s*.04, 0, Math.PI*2);
+    ctx.fillStyle = '#5C3A1E'; ctx.fill();
+  });
+  ctx.restore();
+}
+
+// ─── 1. ICON 128×128 ─────────────────────────────────────────────────────────
+function drawIcon() {
+  const cv = document.getElementById('c-icon');
+  const ctx = cv.getContext('2d');
+  // BG gradient
+  const bg = ctx.createRadialGradient(64, 56, 10, 64, 64, 80);
+  bg.addColorStop(0, '#1a2744');
+  bg.addColorStop(1, C.bg);
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, 128, 128);
+  ghostShape(ctx, 64, 58, 52);
+}
+
+// ─── 2. SMALL PROMO 440×280 ──────────────────────────────────────────────────
+function drawSmall() {
+  const cv = document.getElementById('c-small');
+  const ctx = cv.getContext('2d');
+  const W = 440, H = 280;
+
+  // BG
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#0D1117'); bg.addColorStop(1, '#161B22');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+  // Subtle grid
+  ctx.strokeStyle = 'rgba(48,54,61,0.4)'; ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  // Ghost
+  ghostShape(ctx, 100, 138, 70);
+
+  // Title
+  text(ctx, 'Cookie', 185, 108, 38, C.textPri, 'left', 'bold');
+  text(ctx, 'Ghost', 185, 150, 38, C.blue, 'left', 'bold');
+  text(ctx, "Don't block. Don't delete.", 185, 178, 13, C.textSec);
+  text(ctx, 'Poison the well.', 185, 198, 13, C.orange);
+
+  // Tag row
+  [[C.orange,'Randomizes trackers'],[C.green,'Preserves logins'],[C.blue,'Works everywhere']].forEach(([col, lbl], i) => {
+    const tx = 185 + i * 0;
+    const ty = 232 + i * 16;
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(185, ty - 4, 4, 0, Math.PI*2); ctx.fill();
+    text(ctx, lbl, 197, ty, 12, C.textSec);
+  });
+}
+
+// ─── 3. LARGE BANNER 1400×560 ────────────────────────────────────────────────
+function drawBanner() {
+  const cv = document.getElementById('c-banner');
+  const ctx = cv.getContext('2d');
+  const W = 1400, H = 560;
+
+  // BG
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#0D1117'); bg.addColorStop(0.5, '#131920'); bg.addColorStop(1, '#0D1117');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+  // Glow blobs
+  [[200,250,300,C.blue],[700,100,200,C.orange],[1100,400,350,C.blue]].forEach(([x,y,r,c]) => {
+    const g = ctx.createRadialGradient(x,y,0,x,y,r);
+    g.addColorStop(0, c.replace('#','rgba(').replace(/([0-9a-f]{2})/gi, (m,h)=>parseInt(h,16)+',').slice(0,-1)+',0.08)');
+    g.addColorStop(0, c+'18'); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  });
+
+  // Ghost big
+  ghostShape(ctx, 220, 280, 160);
+
+  // Title area
+  text(ctx, 'Cookie', 420, 220, 96, C.textPri, 'left', '800');
+  text(ctx, 'Ghost', 420, 320, 96, C.blue, 'left', '800');
+
+  // Tagline
+  text(ctx, "Don't block. Don't delete.", 420, 370, 22, C.textSec, 'left', '400');
+  text(ctx, 'Poison the well.', 420, 400, 22, C.orange, 'left', '600');
+
+  // Divider
+  ctx.strokeStyle = C.border; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(800, 140); ctx.lineTo(800, 420); ctx.stroke();
+
+  // Right side — mini stat cards
+  const cards = [
+    [C.orange, '60+', 'Tracking cookie\nformats randomized'],
+    [C.green,  '100%', 'Auth cookies\nsafely preserved'],
+    [C.blue,   '50+', 'Tracker domains\nblocked'],
+  ];
+  cards.forEach(([col, num, lbl], i) => {
+    const cx = 840, cy = 150 + i * 100;
+    rect(ctx, cx, cy, 500, 80, 10, C.surface2, C.border);
+    // Color bar
+    rect(ctx, cx, cy, 4, 80, [10,0,0,10], col);
+    text(ctx, num, cx + 30, cy + 50, 36, col, 'left', 'bold');
+    lbl.split('\n').forEach((line, li) => {
+      text(ctx, line, cx + 110, cy + 30 + li * 22, 15, C.textSec);
+    });
+  });
+
+  // Bottom tagline
+  text(ctx, 'Websites work normally — but trackers get garbage data', 700, 490, 16, C.textSec, 'center', '400');
+}
+
+// ─── 4. SCREENSHOT 1 — Popup UI ──────────────────────────────────────────────
+function drawSS1() {
+  const cv = document.getElementById('c-ss1');
+  const ctx = cv.getContext('2d');
+  const W = 1280, H = 800;
+
+  // Full BG
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#0a0e16'); bg.addColorStop(1, '#111820');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = 'rgba(48,54,61,0.3)'; ctx.lineWidth = 1;
+  for (let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for (let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // Left section — headline
+  const lx = 100;
+  ghostShape(ctx, lx + 50, 220, 90);
+  text(ctx, 'CookieGhost', lx, 360, 52, C.textPri, 'left', 'bold');
+  text(ctx, 'in action', lx, 415, 52, C.blue, 'left', 'bold');
+  text(ctx, 'Tracking cookies on YouTube?', lx, 460, 16, C.textSec);
+  text(ctx, 'All randomized. YouTube works fine.', lx, 485, 16, C.orange);
+
+  // Stats strip
+  [['3','Cookies randomized',C.orange],['0','Auth preserved',C.green],['50','Tracker domains blocked',C.blue]].forEach(([n,l,c],i)=>{
+    const sx = lx + i*200, sy = 540;
+    rect(ctx, sx, sy, 180, 80, 10, C.surface2, C.border);
+    text(ctx, n, sx+90, sy+44, 32, c, 'center', 'bold');
+    text(ctx, l, sx+90, sy+68, 11, C.textSec, 'center');
+  });
+
+  // Right — popup mockup
+  const px = 720, py = 60, pw = 420, ph = 590;
+  // Shadow
+  ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 20;
+  rect(ctx, px, py, pw, ph, 16, C.surface, C.border);
+  ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+
+  // Header
+  rect(ctx, px, py, pw, 64, [16,16,0,0], '#0D1117');
+  ctx.drawImage(document.getElementById('c-icon'), px+16, py+16, 32, 32);
+  text(ctx, 'CookieGhost', px+58, py+38, 17, C.textPri, 'left', 'bold');
+  // Toggle ON
+  rect(ctx, px+pw-70, py+20, 48, 24, 12, C.blue);
+  ctx.fillStyle='white'; ctx.beginPath(); ctx.arc(px+pw-70+30, py+32, 10, 0, Math.PI*2); ctx.fill();
+
+  // Session section
+  text(ctx, 'THIS SESSION', px+20, py+90, 10, C.textSec, 'left', 'bold');
+  rect(ctx, px+16, py+100, 185, 80, 8, C.surface2, C.border);
+  text(ctx, '1,247', px+108, py+148, 30, C.orange, 'center', 'bold');
+  text(ctx, 'Randomized', px+108, py+168, 11, C.textSec, 'center');
+  rect(ctx, px+219, py+100, 185, 80, 8, C.surface2, C.border);
+  text(ctx, '89%', px+311, py+148, 30, C.green, 'center', 'bold');
+  text(ctx, 'Tracking blocked', px+311, py+168, 11, C.textSec, 'center');
+
+  // Site
+  text(ctx, 'CURRENT SITE:', px+20, py+210, 10, C.textSec, 'left', 'bold');
+  text(ctx, 'www.youtube.com', px+120, py+210, 10, C.blue, 'left', 'bold');
+  [[C.orange,'12 cookies randomized'],[C.green,'3 cookies preserved (auth)'],[C.textSec,'0 cookies uncertain']].forEach(([c,l],i)=>{
+    ctx.fillStyle=c; ctx.beginPath(); ctx.arc(px+28, py+232+i*20, 5, 0, Math.PI*2); ctx.fill();
+    text(ctx, l, px+42, py+237+i*20, 12, C.textSec);
+  });
+
+  // Mode buttons
+  ['Aggressive','Balanced','Gentle'].forEach((m,i)=>{
+    const active = i===1;
+    const bx = px+16+i*132, by=py+310, bw=124, bh=34;
+    rect(ctx, bx, by, bw, bh, 8, active?C.blue:C.surface2, active?C.blue:C.border);
+    text(ctx, m, bx+bw/2, by+22, 13, active?'#000':C.textSec, 'center', active?'bold':'normal');
+  });
+
+  // Activity feed
+  text(ctx, 'RECENT ACTIVITY', px+20, py+380, 10, C.textSec, 'left', 'bold');
+  const cookies = [
+    ['_ga','GA1.2.829471...','randomized',C.orange],
+    ['_fbp','fb.1.17283...','randomized',C.orange],
+    ['_gcl_au','1.1.234567...','randomized',C.orange],
+    ['PHPSESSID','(preserved)','preserved',C.green],
+    ['_hjid','a9f2e1b3...','randomized',C.orange],
+  ];
+  cookies.forEach(([name,val,action,col],i)=>{
+    const ry = py+398+i*36;
+    rect(ctx, px+16, ry, pw-32, 30, 6, C.surface2+'88', C.border+'44');
+    text(ctx, name, px+28, ry+20, 11, C.blue, 'left', 'normal', 'monospace');
+    text(ctx, '→', px+120, ry+20, 11, C.textSec, 'left');
+    text(ctx, val, px+138, ry+20, 11, C.textSec, 'left', 'normal', 'monospace');
+    badge(ctx, action.toUpperCase(), px+pw-110, ry+19, col);
+  });
+
+  // Bottom buttons
+  rect(ctx, px+16, py+580-18, 185, 36, 8, C.surface2, C.border);
+  text(ctx, '⚙ Settings', px+108, py+580+4-18, 13, C.textSec, 'center');
+  rect(ctx, px+219, py+580-18, 185, 36, 8, C.surface2, C.border);
+  text(ctx, '📊 Dashboard', px+311, py+580+4-18, 13, C.textSec, 'center');
+}
+
+// ─── 5. SCREENSHOT 2 — How It Works ──────────────────────────────────────────
+function drawSS2() {
+  const cv = document.getElementById('c-ss2');
+  const ctx = cv.getContext('2d');
+  const W=1280, H=800;
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0a0e16'); bg.addColorStop(1,'#111820');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Title
+  text(ctx,'How CookieGhost Works',640,80,36,C.textPri,'center','bold');
+  text(ctx,'Three layers of protection working in real-time',640,118,16,C.textSec,'center');
+
+  // Flow diagram: Tracker → CookieGhost → Browser
+  const steps = [
+    { x:140, icon:'🌐', title:'Website Sets Cookie', sub:'_ga=GA1.2.123.456', color:C.red },
+    { x:460, icon:'👻', title:'CookieGhost Intercepts', sub:'Classifies as tracking', color:C.blue },
+    { x:780, icon:'🎲', title:'Value Randomized', sub:'_ga=GA1.2.829471.917362', color:C.orange },
+    { x:1100, icon:'📡', title:'Tracker Gets Garbage', sub:'Useless noise data', color:C.green },
+  ];
+
+  steps.forEach((s,i) => {
+    rect(ctx, s.x-110, 160, 220, 160, 12, C.surface2, s.color+'66');
+    // Top color bar
+    rect(ctx, s.x-110, 160, 220, 4, [12,12,0,0], s.color);
+    text(ctx, s.icon, s.x, 228, 36, '#fff', 'center');
+    text(ctx, s.title, s.x, 272, 14, C.textPri, 'center', 'bold');
+    text(ctx, s.sub, s.x, 295, 11, s.color, 'center', 'normal', 'monospace');
+    // Arrow
+    if (i < steps.length-1) {
+      ctx.fillStyle=C.textSec; ctx.font='22px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('→', s.x+165, 248);
+    }
+  });
+
+  // Cookie format examples
+  text(ctx,'Format-Aware Randomization',640,390,22,C.textPri,'center','bold');
+  text(ctx,'Every fake value matches the exact format the tracker expects — so it accepts it',640,420,14,C.textSec,'center');
+
+  const examples = [
+    ['Google Analytics _ga', 'GA1.2.1923847561.1711234567', C.orange],
+    ['Facebook Pixel _fbp', 'fb.1.1711234567890.1923847561', C.blue],
+    ['Hotjar _hjid', 'a3f9e2b1-4c8d-47e6-b123-9f7a2e8c1d05', C.green],
+    ['Microsoft Clarity _clck', '9f2e1b3a4c5d6e7f8a9b0c1d2e3f4a5b', C.red],
+    ['HubSpot hubspotutk', '8c4f2a1b3d5e6f7a9b0c2d4e5f6a7b8c', C.orange],
+    ['TikTok _ttp', 'A7fK9mN3pQ5rT8vX2yZ6cW4eB1gH', C.blue],
+  ];
+  examples.forEach(([name,val,col],i) => {
+    const row = Math.floor(i/2), col2 = i%2;
+    const ex = 80 + col2*620, ey = 460 + row*90;
+    rect(ctx, ex, ey, 580, 70, 8, C.surface2, C.border);
+    text(ctx, name, ex+16, ey+26, 12, C.textSec);
+    text(ctx, val, ex+16, ey+52, 13, col, 'left', 'bold', 'monospace');
+    badge(ctx,'RANDOMIZED', ex+580-110, ey+44, col);
+  });
+}
+
+// ─── 6. SCREENSHOT 3 — Protection Modes ──────────────────────────────────────
+function drawSS3() {
+  const cv = document.getElementById('c-ss3');
+  const ctx = cv.getContext('2d');
+  const W=1280, H=800;
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0a0e16'); bg.addColorStop(1,'#111820');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  text(ctx,'Three Protection Modes',640,70,36,C.textPri,'center','bold');
+  text(ctx,'Choose your privacy level — switch anytime from the popup',640,108,16,C.textSec,'center');
+
+  const modes = [
+    {
+      x:100, color:C.red, icon:'🛡', name:'Aggressive',
+      desc:'Maximum privacy.\nRandomizes everything\nincluding uncertain cookies.',
+      tags:['All tracking cookies','Unknown cookies','Third-party cookies'],
+      stats:'~99% randomized'
+    },
+    {
+      x:480, color:C.blue, icon:'⚖', name:'Balanced',
+      desc:'Smart defaults.\nRandomizes confirmed\ntrackers, preserves rest.',
+      tags:['Known tracking cookies','Tracker domain cookies','Long-lived third-party'],
+      stats:'~85% randomized'
+    },
+    {
+      x:860, color:C.green, icon:'🌐', name:'Gentle',
+      desc:'Conservative mode.\nOnly touches confirmed\ntracking cookies.',
+      tags:['Known tracking list only','Whitelist everything else','Best compatibility'],
+      stats:'~60% randomized'
+    },
+  ];
+
+  modes.forEach(m => {
+    const mw = 320;
+    rect(ctx, m.x, 150, mw, 460, 14, C.surface2, m.color+'66');
+    rect(ctx, m.x, 150, mw, 5, [14,14,0,0], m.color);
+
+    // Icon & name
+    text(ctx, m.icon, m.x+mw/2, 222, 42, '#fff', 'center');
+    text(ctx, m.name, m.x+mw/2, 276, 24, m.color, 'center', 'bold');
+
+    // Desc
+    m.desc.split('\n').forEach((line,i) => {
+      text(ctx, line, m.x+mw/2, 312+i*22, 14, C.textSec, 'center');
+    });
+
+    // Tags
+    m.tags.forEach((tag,i) => {
+      ctx.fillStyle=m.color; ctx.beginPath(); ctx.arc(m.x+30, 395+i*32, 4, 0, Math.PI*2); ctx.fill();
+      text(ctx, tag, m.x+44, 400+i*32, 13, C.textPri);
+    });
+
+    // Stat
+    rect(ctx, m.x+20, 505, mw-40, 44, 8, m.color+'22', m.color+'44');
+    text(ctx, m.stats, m.x+mw/2, 532, 16, m.color, 'center', 'bold');
+
+    // "Select" button style
+    rect(ctx, m.x+20, 565, mw-40, 38, 8, m.name==='Balanced'?m.color:C.surface, m.name==='Balanced'?m.color:C.border);
+    text(ctx, m.name==='Balanced'?'✓ Currently active':'Select mode', m.x+mw/2, 589, 13, m.name==='Balanced'?'#000':C.textSec, 'center', 'bold');
+  });
+
+  // Bottom note
+  text(ctx,'Auth cookies (login sessions, CSRF tokens) are NEVER touched in any mode',640,750,14,C.green,'center','normal');
+}
+
+// ─── Render all ──────────────────────────────────────────────────────────────
+window.onload = () => {
+  drawIcon();
+  drawSmall();
+  drawBanner();
+  drawSS1();
+  drawSS2();
+  drawSS3();
+};
+
+function dl(id, filename) {
+  const cv = document.getElementById(id);
+  // Convert to non-alpha PNG (24-bit)
+  const offscreen = document.createElement('canvas');
+  offscreen.width = cv.width; offscreen.height = cv.height;
+  const oc = offscreen.getContext('2d');
+  oc.fillStyle = '#0D1117'; oc.fillRect(0,0,cv.width,cv.height);
+  oc.drawImage(cv,0,0);
+  const a = document.createElement('a');
+  a.href = offscreen.toDataURL('image/png');
+  a.download = filename; a.click();
+}
+
+function downloadAll() {
+  [['c-icon','cookieghost-icon-128.png'],['c-small','cookieghost-promo-small.png'],
+   ['c-banner','cookieghost-banner.png'],['c-ss1','cookieghost-screenshot-1.png'],
+   ['c-ss2','cookieghost-screenshot-2.png'],['c-ss3','cookieghost-screenshot-3.png']
+  ].forEach(([id,name],i) => setTimeout(()=>dl(id,name), i*500));
+}
+</script>
+</body>
+</html>

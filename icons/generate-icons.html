@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head><title>CookieGhost Icon Generator</title></head>
+<body>
+<p>Open this file in a browser, right-click each canvas to save as PNG.</p>
+<div id="canvases"></div>
+<script>
+const sizes = [16, 32, 48, 128];
+
+sizes.forEach(size => {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  canvas.style.border = '1px solid #333';
+  canvas.style.margin = '10px';
+  canvas.style.background = '#0D1117';
+
+  const ctx = canvas.getContext('2d');
+  drawGhost(ctx, size);
+
+  const label = document.createElement('p');
+  label.textContent = `icon-${size}.png`;
+
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'inline-block';
+  wrapper.style.textAlign = 'center';
+  wrapper.appendChild(canvas);
+  wrapper.appendChild(label);
+  document.getElementById('canvases').appendChild(wrapper);
+});
+
+function drawGhost(ctx, s) {
+  const scale = s / 128;
+  ctx.save();
+  ctx.scale(scale, scale);
+
+  // Ghost body
+  ctx.beginPath();
+  ctx.moveTo(64, 16);
+  ctx.bezierCurveTo(30, 16, 20, 44, 20, 64);
+  ctx.lineTo(20, 100);
+  ctx.lineTo(32, 88);
+  ctx.lineTo(44, 100);
+  ctx.lineTo(56, 88);
+  ctx.lineTo(64, 100);
+  ctx.lineTo(72, 88);
+  ctx.lineTo(84, 100);
+  ctx.lineTo(96, 88);
+  ctx.lineTo(108, 100);
+  ctx.lineTo(108, 64);
+  ctx.bezierCurveTo(108, 44, 98, 16, 64, 16);
+  ctx.closePath();
+
+  // Ghost gradient fill
+  const grad = ctx.createLinearGradient(20, 16, 108, 100);
+  grad.addColorStop(0, 'rgba(200, 220, 255, 0.9)');
+  grad.addColorStop(1, 'rgba(140, 170, 230, 0.7)');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Ghost outline glow
+  ctx.shadowColor = 'rgba(88, 166, 255, 0.5)';
+  ctx.shadowBlur = 8 * scale;
+  ctx.strokeStyle = 'rgba(88, 166, 255, 0.6)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Eyes
+  ctx.fillStyle = '#0D1117';
+  ctx.beginPath();
+  ctx.ellipse(50, 52, 8, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(78, 52, 8, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Eye shine
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+  ctx.beginPath();
+  ctx.ellipse(47, 48, 3, 3, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(75, 48, 3, 3, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Cookie (small circle near ghost's right hand area)
+  ctx.fillStyle = '#D4A574';
+  ctx.beginPath();
+  ctx.arc(92, 76, 12, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Cookie chips
+  ctx.fillStyle = '#8B6914';
+  ctx.beginPath();
+  ctx.arc(88, 72, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(96, 78, 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(90, 80, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+</script>
+</body>
+</html>

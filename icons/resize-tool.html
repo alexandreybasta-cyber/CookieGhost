@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CookieGhost — Screenshot Resizer → 1280×800</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #0D1117;
+  color: #E6EDF3;
+  font-family: -apple-system, 'Inter', sans-serif;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+h1 { font-size: 22px; color: #58A6FF; margin-bottom: 6px; }
+p.sub { color: #8B949E; font-size: 13px; margin-bottom: 30px; }
+
+#drop-zone {
+  border: 2px dashed #30363D;
+  border-radius: 14px;
+  padding: 60px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #161B22;
+  margin-bottom: 30px;
+}
+#drop-zone.drag-over {
+  border-color: #58A6FF;
+  background: #1c2535;
+  box-shadow: 0 0 30px rgba(88,166,255,0.15);
+}
+#drop-zone p { color: #8B949E; font-size: 15px; }
+#drop-zone strong { color: #58A6FF; }
+#file-input { display: none; }
+
+#results { display: flex; flex-wrap: wrap; gap: 20px; }
+
+.result-card {
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 320px;
+}
+.result-card img { width: 100%; display: block; }
+.result-info {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.result-name { font-size: 12px; color: #8B949E; font-family: monospace; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dl-btn {
+  background: #238636;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.dl-btn:hover { background: #2ea043; }
+
+#dl-all-btn {
+  display: none;
+  margin-bottom: 24px;
+  padding: 10px 24px;
+  background: #F0883E;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#dl-all-btn:hover { background: #e07830; }
+.badge {
+  display: inline-block;
+  background: #238636;
+  color: white;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>👻 Screenshot Resizer</h1>
+<p class="sub">Drop your screenshots here → they'll be resized to exactly <strong style="color:#F0883E">1280 × 800 px</strong> (PNG 24-bit, Chrome Web Store ready)</p>
+
+<div id="drop-zone" onclick="document.getElementById('file-input').click()">
+  <p>🖼 <strong>Drop screenshots here</strong> or click to choose files</p>
+  <p style="margin-top:8px;font-size:12px">Accepts JPG, PNG — multiple files OK</p>
+</div>
+<input type="file" id="file-input" accept="image/*" multiple>
+
+<button id="dl-all-btn" onclick="downloadAll()">⬇ Download All Resized</button>
+
+<div id="results"></div>
+
+<canvas id="offscreen" style="display:none"></canvas>
+
+<script>
+const TARGET_W = 1280;
+const TARGET_H = 800;
+const results = [];
+
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const resultsEl = document.getElementById('results');
+const dlAllBtn = document.getElementById('dl-all-btn');
+const offscreen = document.getElementById('offscreen');
+offscreen.width = TARGET_W;
+offscreen.height = TARGET_H;
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  processFiles([...e.dataTransfer.files]);
+});
+fileInput.addEventListener('change', () => processFiles([...fileInput.files]));
+
+function processFiles(files) {
+  files.filter(f => f.type.startsWith('image/')).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => resizeImage(e.target.result, file.name);
+    reader.readAsDataURL(file);
+  });
+}
+
+function resizeImage(src, origName) {
+  const img = new Image();
+  img.onload = () => {
+    const ctx = offscreen.getContext('2d');
+
+    // Fill background (no alpha)
+    ctx.fillStyle = '#0D1117';
+    ctx.fillRect(0, 0, TARGET_W, TARGET_H);
+
+    // Scale to cover 1280x800, centered
+    const scale = Math.max(TARGET_W / img.width, TARGET_H / img.height);
+    const sw = img.width * scale;
+    const sh = img.height * scale;
+    const sx = (TARGET_W - sw) / 2;
+    const sy = (TARGET_H - sh) / 2;
+
+    ctx.drawImage(img, sx, sy, sw, sh);
+
+    const dataUrl = offscreen.toDataURL('image/png');
+    const baseName = origName.replace(/\.[^.]+$/, '');
+    const outName = `${baseName}-1280x800.png`;
+
+    results.push({ dataUrl, outName });
+    renderCard(dataUrl, outName, results.length - 1);
+    dlAllBtn.style.display = 'block';
+  };
+  img.src = src;
+}
+
+function renderCard(dataUrl, name, idx) {
+  const card = document.createElement('div');
+  card.className = 'result-card';
+  card.innerHTML = `
+    <img src="${dataUrl}" alt="${name}">
+    <div class="result-info">
+      <span class="result-name">${name} <span class="badge">1280×800</span></span>
+      <button class="dl-btn" onclick="dl(${idx})">⬇ Save</button>
+    </div>
+  `;
+  resultsEl.appendChild(card);
+}
+
+function dl(idx) {
+  const { dataUrl, outName } = results[idx];
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = outName;
+  a.click();
+}
+
+function downloadAll() {
+  results.forEach((_, i) => setTimeout(() => dl(i), i * 400));
+}
+</script>
+</body>
+</html>
